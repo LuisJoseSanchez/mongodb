@@ -73,6 +73,15 @@ switched to db gestion
 gestion
 ```
 
+## Borrar una base de datos
+
+```console
+> use prueba
+switched to db prueba
+> db.dropDatabase()
+{ "dropped" : "usuarios", "ok" : 1 }
+```
+
 ## Grabar datos
 
 Vamos a grabar datos en la colección `usuarios` dentro de la base de datos `gestion`. Una colección es el equivalente a una tabla en las bases de datos relacionales.
