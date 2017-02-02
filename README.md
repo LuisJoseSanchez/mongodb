@@ -2,7 +2,7 @@
 
 ## Instalación de MongoDB
 
-La instalación ha sido probada en **Ubuntu 16.10**. Para otras plataformas ir a la [página oficial de MongoDB](https://www.mongodb.com/es).
+Esta instalación ha sido probada en **Ubuntu 16.10**. Para otras plataformas ir a la [página oficial de MongoDB](https://www.mongodb.com/es).
 
 ### Importar la clave pública
 
@@ -28,4 +28,17 @@ sudo apt-get update
 sudo apt-get install -y mongodb-org
 ```
 
+## Lanzar el demonio
 
+```console
+sudo service mongod start
+```
+
+## Ejecutar el interfaz de línea de comandos de MongoDB
+
+```console
+mongo
+```
+
+```console
+```
