@@ -149,7 +149,34 @@ Observa que a cada elemento insertado se le asigna de forma automática un ident
 > db.usuarios.find( { edad: {$lt: 18} } )
 ```
 
-## 
+## Insertar varios documentos al mismo tiempo
+
+Mediante `insert` se puede insertar un elemento o bien un array con varios elementos.
+
+```console
+> var p1 = { nombre: "Lola", apellido: "Mento", edad: 35 }
+> var p2 = { nombre: "Encarna", apellido: "Vales", edad: 17, pais: "USA" }
+> db.usuarios.insert( [p1, p2] )
+BulkWriteResult({
+	"writeErrors" : [ ],
+	"writeConcernErrors" : [ ],
+	"nInserted" : 2,
+	"nUpserted" : 0,
+	"nMatched" : 0,
+	"nModified" : 0,
+	"nRemoved" : 0,
+	"upserted" : [ ]
+})
+> db.usuarios.find()
+{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
+{ "_id" : ObjectId("58937beca70c3985de49a390"), "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
+{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
+{ "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Lola", "apellido" : "Mento", "edad" : 35 }
+{ "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 17, "pais" : "USA" }
+```
+
+
+## Edición de un documento
 
 ```console
 
