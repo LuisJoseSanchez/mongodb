@@ -120,6 +120,69 @@ Observa que a cada elemento insertado se le asigna de forma automática un ident
 }
 ```
 
+## Búsqueda condicional I
+
+```console
+> db.usuarios.find({nombre: "Elba"})
+{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
+> 
+> db.usuarios.find({pais: "España"})
+{ "_id" : ObjectId("58937beca70c3985de49a390"), "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
+```
+
+## Búsqueda condicional II
+
+`$ne` significa *not equal*, `$gt` es *greater than* y `$lt` es *less than*.
+
+```console
+> db.usuarios.find( { nombre: {$ne: "Elba"} } )
+{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
+{ "_id" : ObjectId("58937beca70c3985de49a390"), "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
+> 
+> db.usuarios.find( { pais: {$ne: "España"} } )
+{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
+{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
+> 
+> db.usuarios.find( { edad: {$gt: 18} } )
+{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
+> 
+> db.usuarios.find( { edad: {$lt: 18} } )
+```
+
+## 
+
+```console
+
+```
+
+
+## 
+
+```console
+
+```
+
+
+## 
+
+```console
+
+```
+
+
+## 
+
+```console
+
+```
+
+
+## 
+
+```console
+
+```
+
 
 ## 
 
