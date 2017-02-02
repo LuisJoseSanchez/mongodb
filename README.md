@@ -109,10 +109,15 @@ Sería el equivalente a `SELECT * FROM usuarios` en una base de datos relacional
 
 Observa que a cada elemento insertado se le asigna de forma automática un identificador único.
 
-## 
+## Mostrar un solo documento
 
 ```console
-
+> db.usuarios.findOne()
+{
+	"_id" : ObjectId("58937be7a70c3985de49a38f"),
+	"nombre" : "Mario",
+	"apellido" : "Neta"
+}
 ```
 
 
