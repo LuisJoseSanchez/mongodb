@@ -50,3 +50,27 @@ mongo
 > persona2
 { "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
 ```
+
+## Ver bases de datos existentes
+
+```console
+> show databases
+admin  0.000GB
+local  0.000GB
+```
+
+## 
+```console
+```
+
+## 
+```console
+```
+
+## 
+```console
+```
+
+## 
+```console
+```
