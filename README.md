@@ -185,7 +185,7 @@ BulkWriteResult({
 ```
 
 
-## Edición de un documento
+## Edición de un documento con `save()`
 
 ```console
 > var persona = db.usuarios.findOne({ "_id" : ObjectId("58938745a70c3985de49a392")})
@@ -217,9 +217,10 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 
 :warning: Cuidado al guardar el documento en una variable. Hay que usar `findOne()` ya que utilizando `find()` el valor de la variable se pierde. Otra opción es volcar el resultado de la consulta en un array con `find().toArray`.
 
-## 
+<!--- ## Edición de un documento con `update()` --->
 
 ```console
+
 
 ```
 
