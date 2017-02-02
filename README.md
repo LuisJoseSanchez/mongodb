@@ -40,5 +40,13 @@ sudo service mongod start
 mongo
 ```
 
+## Crear objetos (documentos)
+
 ```console
+> var persona1 = {nombre: "Mario", apellido: "Neta"}
+> var persona2 = {nombre: "Pere", apellido: "Gil", pais: "España"}
+> persona1
+{ "nombre" : "Mario", "apellido" : "Neta" }
+> persona2
+{ "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
 ```
