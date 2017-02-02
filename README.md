@@ -66,7 +66,7 @@ local  0.000GB
 switched to db gestion
 ```
 
-## Ver en qué base de datos estamos
+## Ver en qué base de datos nos encontramos
 
 ```console
 > db
@@ -75,7 +75,7 @@ gestion
 
 ## Grabar datos
 
-Vamos a grabar datos en el esquema `usuarios` dentro de la base de datos `gestion`. Un esquema es el equivalente a una tabla en las bases de datos relacionales.
+Vamos a grabar datos en la colección `usuarios` dentro de la base de datos `gestion`. Una colección es el equivalente a una tabla en las bases de datos relacionales.
 
 ```console
 > db.usuarios.insert(persona1)
@@ -86,12 +86,13 @@ WriteResult({ "nInserted" : 1 })
 WriteResult({ "nInserted" : 1 })
 ```
 
-Observa que los documentos insertados (los datos sobre personas) no tienen por qué ajustarse a la misma estructura, pueden ser heterogéneos.
+Observa que los documentos insertados (los datos sobre personas) no tienen por qué ajustarse a la misma estructura, pueden ser heterogéneos y, por tanto, contener distinto número y tipo de campos.
 
-## 
+## Ver las colecciones de la base de datos actual
 
 ```console
-
+> show collections
+usuarios
 ```
 
 
