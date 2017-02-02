@@ -59,18 +59,67 @@ admin  0.000GB
 local  0.000GB
 ```
 
-## 
+## Usar una base de datos (existente o no)
+
 ```console
+> use gestion
+switched to db gestion
 ```
 
-## 
+## Ver en qué base de datos estamos
+
 ```console
+> db
+gestion
 ```
 
-## 
+## Grabar datos
+
+Vamos a grabar datos en el esquema `usuarios` dentro de la base de datos `gestion`. Un esquema es el equivalente a una tabla en las bases de datos relacionales.
+
 ```console
+> db.usuarios.insert(persona1)
+WriteResult({ "nInserted" : 1 })
+> db.usuarios.insert(persona2)
+WriteResult({ "nInserted" : 1 })
+> db.usuarios.insert({nombre: "Elba", apellido: "Lazo", edad: 24})
+WriteResult({ "nInserted" : 1 })
 ```
 
+Observa que los documentos insertados (los datos sobre personas) no tienen por qué ajustarse a la misma estructura, pueden ser heterogéneos.
+
 ## 
+
 ```console
+
 ```
+
+
+## 
+
+```console
+
+```
+
+
+## 
+
+```console
+
+```
+
+
+## 
+
+```console
+
+```
+
+
+## 
+
+```console
+
+```
+
+
