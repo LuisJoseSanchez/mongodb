@@ -179,9 +179,34 @@ BulkWriteResult({
 ## Edición de un documento
 
 ```console
-
+> var persona = db.usuarios.findOne({ "_id" : ObjectId("58938745a70c3985de49a392")})
+> persona
+{
+	"_id" : ObjectId("58938745a70c3985de49a392"),
+	"nombre" : "Lola",
+	"apellido" : "Mento",
+	"edad" : 35
+}
+> persona.nombre = "Salva"
+Salva
+> persona
+{
+	"_id" : ObjectId("58938745a70c3985de49a392"),
+	"nombre" : "Salva",
+	"apellido" : "Mento",
+	"edad" : 35
+}
+> db.usuarios.save(persona)
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.usuarios.find()
+{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
+{ "_id" : ObjectId("58937beca70c3985de49a390"), "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
+{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
+{ "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Salva", "apellido" : "Mento", "edad" : 35 }
+{ "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 17, "pais" : "USA" }
 ```
 
+W> Cuidado al guardar el documento en una variable. Hay que usar `findOne()` ya que utilizando `find()` el valor de la variable se pierde.
 
 ## 
 
