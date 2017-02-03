@@ -217,13 +217,27 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 
 :warning: Cuidado al guardar el documento en una variable. Hay que usar `findOne()` ya que utilizando `find()` el valor de la variable se pierde. Otra opción es volcar el resultado de la consulta en un array con `find().toArray`.
 
-<!--- ## Edición de un documento con `update()` --->
+## Edición de un documento con `update()` --->
+
+Vamos a modificar la edad del usuario cuyo nombre es `Encarna`.
 
 ```console
-
+> p = db.usuarios.findOne({nombre: "Encarna"})
+{
+	"_id" : ObjectId("58938745a70c3985de49a393"),
+	"nombre" : "Encarna",
+	"apellido" : "Vales",
+	"edad" : 17,
+	"pais" : "USA"
+}
+> p.edad = 18
+18
+> db.usuarios.update({nombre: "Encarna"}, p)
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.usuarios.find({nombre: "Encarna"})
+{ "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 18, "pais" : "USA" }
 
 ```
-
 
 ## Realizar una copia de seguridad de una base de datos
 
