@@ -288,10 +288,16 @@ WriteResult({ "nRemoved" : 1 })
 ```
 
 
-## 
+## Consultar un número concreto de campos
+
+Vamos a mostrar un listado de los usuarios solo con los campos `nombre` y `edad`.
 
 ```console
-
+> db.usuarios.find({}, {nombre: 1, edad: 1, _id:0})
+{ "nombre" : "Mario" }
+{ "nombre" : "Elba", "edad" : 24 }
+{ "nombre" : "Salva", "edad" : 35 }
+{ "nombre" : "Encarna", "edad" : 19 }
 ```
 
 
