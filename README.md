@@ -225,17 +225,18 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 ```
 
 
-## 
+## Realizar una copia de seguridad de una base de datos
+
+Se puede especificar la ruta de destino donde se guardará la copia de seguridad con la opcion `-o`. Si no se especifica la ruta de destino, se crea el directorio `dump` dentro del directorio actual. Dentro de `dump` se crea otro directorio con el nombre de la base de datos, en este caso `gestion`. Dentro de este último directorio se guardan las colecciones de la base de datos en formato BSON. Observa que el comando `mongodump` se ejecuta desde el terminal de Linux, no desde la *shell* de MongoDB.
 
 ```console
-
+$ mongodump -d gestion
 ```
 
-
-## 
+## Restaurar una copia de seguridad
 
 ```console
-
+$ mongorestore -d gestion dump/gestion
 ```
 
 
