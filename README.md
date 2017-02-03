@@ -314,4 +314,60 @@ Vamos a mostrar un listado de los usuarios solo con los campos `nombre` y `edad`
 4
 ```
 
+## Consultas ordenadas
 
+El valor `1` se utiliza para realizar una consulta en orden ascendente y el `-1` para descendente.
+
+```console
+> db.usuarios.find().sort( {apellido: 1} )
+{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
+{ "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Salva", "apellido" : "Mento", "edad" : 35 }
+{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
+{ "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 19, "pais" : "USA" }
+> 
+> db.usuarios.find().sort( {apellido: -1} )
+{ "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 19, "pais" : "USA" }
+{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
+{ "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Salva", "apellido" : "Mento", "edad" : 35 }
+{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
+```
+
+
+## 
+
+```console
+```
+
+
+## 
+
+```console
+```
+
+
+## 
+
+```console
+```
+
+
+## 
+
+```console
+```
+
+
+## 
+
+```console
+```
+
+## 
+
+```console
+```
+
+## 
+
+```console
+```
