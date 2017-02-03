@@ -354,7 +354,7 @@ La función `skip()` permite "saltar" un número determinado de documentos de la
 
 ## La función `size()`
 
-A diferencia de `count()`, `size()` ofrece la cuenta de la consulta una vez filtrada con `skip()`, `limit()`, etc.
+A diferencia de `count()`, el método `size()` ofrece la cuenta de la consulta una vez filtrada con `skip()`, `limit()`, etc.
 
 ```console
 > db.usuarios.find().sort( {apellido: 1} ).skip(1).limit(2).count()
