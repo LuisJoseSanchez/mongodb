@@ -478,9 +478,34 @@ Usuarios cuyo nombre comienza por "El".
 > 
 ```
 
-## 
+## Ver los documentos en un formato "bonito"
+
+El método `pretty()` nos permite ver los documentos de una manera bonita y legible. A continuación se compara una consulta sin `pretty()` y otra con `pretty()`.
 
 ```console
+> db.usuarios.find().limit(3)
+{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
+{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
+{ "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Salva", "apellido" : "Mento", "edad" : 35 }
+> 
+> db.usuarios.find().limit(3).pretty()
+{
+	"_id" : ObjectId("58937be7a70c3985de49a38f"),
+	"nombre" : "Mario",
+	"apellido" : "Neta"
+}
+{
+	"_id" : ObjectId("58937c23a70c3985de49a391"),
+	"nombre" : "Elba",
+	"apellido" : "Lazo",
+	"edad" : 24
+}
+{
+	"_id" : ObjectId("58938745a70c3985de49a392"),
+	"nombre" : "Salva",
+	"apellido" : "Mento",
+	"edad" : 35
+}
 ```
 
 
