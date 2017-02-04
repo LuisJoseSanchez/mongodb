@@ -28,7 +28,7 @@ sudo apt-get update
 sudo apt-get install -y mongodb-org
 ```
 
-## Lanzar el demonio
+### Lanzar el demonio
 
 ```console
 sudo service mongod start
