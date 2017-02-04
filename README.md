@@ -448,17 +448,24 @@ Igual que todo lo anterior y además excluyendo los valores `null` para el atrib
 { "_id" : "Francia", "repetidos" : 1, "edad media" : 22 }
 ```
 
-## 
+## Consultas con expresiones regulares
+
+Vamos a mostrar todos los usuarios cuyos apellidos contienen la letra "e".
 
 ```console
-
+> db.usuarios.find( {apellido: /e/} )
+{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
+{ "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Salva", "apellido" : "Mento", "edad" : 35 }
+{ "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 17, "pais" : "USA" }
+{ "_id" : ObjectId("5895b88815c260814ec7f13c"), "nombre" : "Olga", "apellido" : "Seosa", "edad" : 29, "pais" : "España" }
 ```
 
-
-## 
+Usuarios cuyo nombre termina con la cadena "na".
 
 ```console
-
+> db.usuarios.find( {nombre: /na$/} )
+{ "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 17, "pais" : "USA" }
+{ "_id" : ObjectId("5895b8ab15c260814ec7f13d"), "nombre" : "Elena", "apellido" : "Nito", "edad" : 30, "pais" : "USA" }
 ```
 
 
