@@ -437,13 +437,16 @@ Igual y además con la media de edad por pais.
 { "_id" : "Portugal", "repetidos" : 1, "edad media" : 52 }
 ```
 
-
-## 
+Igual que todo lo anterior y además excluyendo los valores `null` para el atributo `pais`.
 
 ```console
-
+> db.usuarios.aggregate( [ {$match: {pais: {$ne: null}}}, {$group: {_id: "$pais", repetidos: {$sum: 1}, "edad media": {$avg: "$edad"}}} ])
+{ "_id" : "Venezuela", "repetidos" : 1, "edad media" : 48 }
+{ "_id" : "España", "repetidos" : 2, "edad media" : 29 }
+{ "_id" : "USA", "repetidos" : 2, "edad media" : 23.5 }
+{ "_id" : "Portugal", "repetidos" : 1, "edad media" : 52 }
+{ "_id" : "Francia", "repetidos" : 1, "edad media" : 22 }
 ```
-
 
 ## 
 
