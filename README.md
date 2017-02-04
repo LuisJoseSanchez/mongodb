@@ -34,6 +34,14 @@ sudo apt-get install -y mongodb-org
 sudo service mongod start
 ```
 
+### Arranque automático del servicio
+
+Si vamos a utilizar con frecuencia MongoDB, lo mejor es hacer que el demonio se lance de forma automática cada vez que arranca el sistema.
+
+```console
+sudo systemctl enable mongod.service
+```
+
 ## Ejecutar el interfaz de línea de comandos de MongoDB
 
 ```console
