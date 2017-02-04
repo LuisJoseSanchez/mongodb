@@ -509,11 +509,23 @@ El método `pretty()` nos permite ver los documentos de una manera bonita y legi
 ```
 
 
-## 
+## Crear colecciones con validación de atributos
+
+Al crear una colección, se puede indicar a MongoDB que los atributos sean de un tipo concreto o que cumplan con un determinado patrón.
+
+Vamos a crear una nueva colección llamada `empleado` cuyo atributo nombre será de tipo `string`, `sueldo` será de tipo `number` y `email` deberá contener un símbolo `@`.
 
 ```console
+db.createCollection("empleado", {
+  validator: {
+    $and: [
+      { nombre: {$type: "string"} },
+      { sueldo: {$type: "number"} },
+      { email: {$regex: /@/} }
+    ]
+  }
+})
 ```
-
 
 ## 
 
