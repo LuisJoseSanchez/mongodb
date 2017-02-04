@@ -468,11 +468,14 @@ Usuarios cuyo nombre termina con la cadena "na".
 { "_id" : ObjectId("5895b8ab15c260814ec7f13d"), "nombre" : "Elena", "apellido" : "Nito", "edad" : 30, "pais" : "USA" }
 ```
 
-
-## 
+Usuarios cuyo nombre comienza por "El".
 
 ```console
-
+> db.usuarios.find( {nombre: /^El/} )
+{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
+{ "_id" : ObjectId("5895b74415c260814ec7f139"), "nombre" : "Elsa", "apellido" : "Pato", "edad" : 52, "pais" : "Portugal" }
+{ "_id" : ObjectId("5895b8ab15c260814ec7f13d"), "nombre" : "Elena", "apellido" : "Nito", "edad" : 30, "pais" : "USA" }
+> 
 ```
 
 ## 
