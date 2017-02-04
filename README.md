@@ -527,9 +527,16 @@ db.createCollection("empleado", {
 })
 ```
 
-## 
+## Crear índices
 
 ```console
+> db.usuarios.createIndex({nombre: 1})
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"ok" : 1
+}
 ```
 
 ## 
