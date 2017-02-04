@@ -428,16 +428,6 @@ Ahora igual pero diciendo cuántas veces se repite cada pais.
 Igual y además con la media de edad por pais.
 
 ```console
-> db.usuarios.aggregate( [ {$group: {_id: "$pais", repetidos: {$sum: 1}}} ] )
-{ "_id" : "Venezuela", "repetidos" : 1 }
-{ "_id" : "Francia", "repetidos" : 1 }
-{ "_id" : null, "repetidos" : 3 }
-{ "_id" : "España", "repetidos" : 2 }
-{ "_id" : "USA", "repetidos" : 2 }
-{ "_id" : "Portugal", "repetidos" : 1 }
-```
-
-```console
 > db.usuarios.aggregate( [ {$group: {_id: "$pais", repetidos: {$sum: 1}, "edad media": {$avg: "$edad"}}} ] )
 { "_id" : "Venezuela", "repetidos" : 1, "edad media" : 48 }
 { "_id" : "Francia", "repetidos" : 1, "edad media" : 22 }
