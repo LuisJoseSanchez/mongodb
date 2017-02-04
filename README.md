@@ -372,6 +372,108 @@ A diferencia de `count()`, el método `size()` ofrece la cuenta de la consulta u
 2
 ```
 
+## Agrupación de documentos
+
+Antes de hacer pruebas con la agrupación de documentos, vamos a meter más datos en nuestra colección de usuarios.
+
+```console
+> db.usuarios.insert({nombre: "Elsa", apellido: "Pato", edad: 52, pais: "Portugal"})
+WriteResult({ "nInserted" : 1 })
+> db.usuarios.insert({nombre: "Armando", apellido: "Bronca", edad: 22, pais: "Francia"})
+WriteResult({ "nInserted" : 1 })
+> db.usuarios.insert({nombre: "Leandro", apellido: "Gado", edad: 48, pais: "Venezuela"})
+WriteResult({ "nInserted" : 1 })
+> db.usuarios.insert({nombre: "Olga", apellido: "Seosa", edad: 29, pais: "España"})
+WriteResult({ "nInserted" : 1 })
+> db.usuarios.insert({nombre: "Elena", apellido: "Nito", edad: 30, pais: "USA"})
+WriteResult({ "nInserted" : 1 })
+> 
+> db.usuarios.find()
+{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
+{ "_id" : ObjectId("58937beca70c3985de49a390"), "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
+{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
+{ "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Salva", "apellido" : "Mento", "edad" : 35 }
+{ "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 17, "pais" : "USA" }
+{ "_id" : ObjectId("5895b74415c260814ec7f139"), "nombre" : "Elsa", "apellido" : "Pato", "edad" : 52, "pais" : "Portugal" }
+{ "_id" : ObjectId("5895b77215c260814ec7f13a"), "nombre" : "Armando", "apellido" : "Bronca", "edad" : 22, "pais" : "Francia" }
+{ "_id" : ObjectId("5895b7d915c260814ec7f13b"), "nombre" : "Leandro", "apellido" : "Gado", "edad" : 48, "pais" : "Venezuela" }
+{ "_id" : ObjectId("5895b88815c260814ec7f13c"), "nombre" : "Olga", "apellido" : "Seosa", "edad" : 29, "pais" : "España" }
+{ "_id" : ObjectId("5895b8ab15c260814ec7f13d"), "nombre" : "Elena", "apellido" : "Nito", "edad" : 30, "pais" : "USA" }
+```
+
+Vamos a mostrar todos los países de donde son los usuarios.
+
+```console
+> db.usuarios.aggregate( [ {$group: {_id: "$pais"}} ] )
+{ "_id" : "Venezuela" }
+{ "_id" : "Francia" }
+{ "_id" : null }
+{ "_id" : "España" }
+{ "_id" : "USA" }
+{ "_id" : "Portugal" }
+```
+
+Ahora igual pero diciendo cuántas veces se repite cada pais.
+
+```console
+> db.usuarios.aggregate( [ {$group: {_id: "$pais", repetidos: {$sum: 1}}} ] )
+{ "_id" : "Venezuela", "repetidos" : 1 }
+{ "_id" : "Francia", "repetidos" : 1 }
+{ "_id" : null, "repetidos" : 3 }
+{ "_id" : "España", "repetidos" : 2 }
+{ "_id" : "USA", "repetidos" : 2 }
+{ "_id" : "Portugal", "repetidos" : 1 }
+```
+
+Igual y además con la media de edad por pais.
+
+```console
+> db.usuarios.aggregate( [ {$group: {_id: "$pais", repetidos: {$sum: 1}}} ] )
+{ "_id" : "Venezuela", "repetidos" : 1 }
+{ "_id" : "Francia", "repetidos" : 1 }
+{ "_id" : null, "repetidos" : 3 }
+{ "_id" : "España", "repetidos" : 2 }
+{ "_id" : "USA", "repetidos" : 2 }
+{ "_id" : "Portugal", "repetidos" : 1 }
+```
+
+```console
+> db.usuarios.aggregate( [ {$group: {_id: "$pais", repetidos: {$sum: 1}, "edad media": {$avg: "$edad"}}} ] )
+{ "_id" : "Venezuela", "repetidos" : 1, "edad media" : 48 }
+{ "_id" : "Francia", "repetidos" : 1, "edad media" : 22 }
+{ "_id" : null, "repetidos" : 3, "edad media" : 29.5 }
+{ "_id" : "España", "repetidos" : 2, "edad media" : 29 }
+{ "_id" : "USA", "repetidos" : 2, "edad media" : 23.5 }
+{ "_id" : "Portugal", "repetidos" : 1, "edad media" : 52 }
+```
+
+
+## 
+
+```console
+
+```
+
+
+## 
+
+```console
+
+```
+
+
+## 
+
+```console
+
+```
+
+
+## 
+
+```console
+
+```
 
 ## 
 
