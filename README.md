@@ -1,4 +1,4 @@
-# MongoDB - Instalación y primeros pasos
+# Introducción a MongoDB (actualizado a la versión 8)
 
 ## Instalación de MongoDB
 
