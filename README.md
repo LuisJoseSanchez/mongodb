@@ -21,7 +21,7 @@ services:
 
 Se puede editar al gusto para cambiar el puerto o los datos del usuario administrador de la base de datos.
 
-Nótese que la carpeta `/data/db` del contenedor está mapeada a la carpeta `mongo` de la máquina local. En esta carpeta se guardarán los datos, de tal forma que los podremos recuperar aunque se pare, o incluso se elimine, el contenedor.
+Nótese que la carpeta `/data/db` del contenedor está mapeada a la carpeta `mongo` de la máquina local. En esta carpeta se guardarán los datos, de tal forma que los podremos recuperar aunque se pare, o incluso se elimine, el contenedor. Esa carpeta no se sube al repositorio (está en `.gitignore`).
 
 ## Pasos a seguir para ejecutar MongoDB
 
@@ -41,8 +41,7 @@ Si hacemos `ls`, debemos ver el archivo `docker-compose.yml`:
 
 ```console
 ls
-docker-compose.yml
-README.md
+docker-compose.yml  README.md  .gitignore
 ```
 
 ### 3. Lanzar el contenedor
@@ -118,7 +117,7 @@ gestion
 > use prueba
 switched to db prueba
 > db.dropDatabase()
-{ "dropped" : "usuarios", "ok" : 1 }
+{ ok: 1, dropped: 'prueba' }
 ```
 
 ## Crear objetos (documentos) en memoria
@@ -138,11 +137,20 @@ Vamos a grabar datos en la colección `usuarios` dentro de la base de datos `ges
 
 ```console
 > db.usuarios.insertOne(persona1)
-WriteResult({ "nInserted" : 1 })
+{
+  acknowledged: true,
+  insertedId: ObjectId('...')
+}
 > db.usuarios.insertOne(persona2)
-WriteResult({ "nInserted" : 1 })
+{
+  acknowledged: true,
+  insertedId: ObjectId('...')
+}
 > db.usuarios.insertOne({nombre: "Elba", apellido: "Lazo", edad: 24})
-WriteResult({ "nInserted" : 1 })
+{
+  acknowledged: true,
+  insertedId: ObjectId('...')
+}
 ```
 
 Observa que los documentos insertados (los datos sobre personas) no tienen por qué ajustarse a la misma estructura, pueden ser heterogéneos y, por tanto, contener distinto número y tipo de campos.
@@ -209,22 +217,19 @@ Observa que a cada elemento insertado se le asigna de forma automática un ident
 
 ## Insertar varios documentos al mismo tiempo
 
-Mediante `insert` se puede insertar un elemento o bien un array con varios elementos.
+Mediante `insertMany` se pueden insertar varios documentos a la vez pasando un array.
 
 ```console
 > var p1 = { nombre: "Lola", apellido: "Mento", edad: 35 }
 > var p2 = { nombre: "Encarna", apellido: "Vales", edad: 17, pais: "USA" }
 > db.usuarios.insertMany( [p1, p2] )
-BulkWriteResult({
-	"writeErrors" : [ ],
-	"writeConcernErrors" : [ ],
-	"nInserted" : 2,
-	"nUpserted" : 0,
-	"nMatched" : 0,
-	"nModified" : 0,
-	"nRemoved" : 0,
-	"upserted" : [ ]
-})
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('...'),
+    '1': ObjectId('...')
+  }
+}
 > db.usuarios.find()
 { "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
 { "_id" : ObjectId("58937beca70c3985de49a390"), "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
@@ -234,7 +239,7 @@ BulkWriteResult({
 ```
 
 
-## Edición de un documento con `save()`
+## Edición de un documento con `replaceOne()`
 
 ```console
 > var persona = db.usuarios.findOne({ "_id" : ObjectId("58938745a70c3985de49a392")})
@@ -254,8 +259,14 @@ Salva
 	"apellido" : "Mento",
 	"edad" : 35
 }
-> db.usuarios.save(persona)
-WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.usuarios.replaceOne({ _id: persona._id }, persona)
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
 > db.usuarios.find()
 { "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
 { "_id" : ObjectId("58937beca70c3985de49a390"), "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
@@ -266,9 +277,9 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 
 :warning: Cuidado al guardar el documento en una variable. Hay que usar `findOne()` ya que utilizando `find()` el valor de la variable se pierde. Otra opción es volcar el resultado de la consulta en un array con `find().toArray`.
 
-## Edición de un documento con `update()`
+## Edición de un documento sustituyendo el documento completo
 
-Vamos a modificar la edad del usuario cuyo nombre es `Encarna`.
+Vamos a modificar la edad del usuario cuyo nombre es `Encarna`, cargando el documento en una variable y guardándolo con `replaceOne()`.
 
 ```console
 > p = db.usuarios.findOne({nombre: "Encarna"})
@@ -281,35 +292,49 @@ Vamos a modificar la edad del usuario cuyo nombre es `Encarna`.
 }
 > p.edad = 18
 18
-> db.usuarios.update({nombre: "Encarna"}, p)
-WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.usuarios.replaceOne({nombre: "Encarna"}, p)
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
 > db.usuarios.find({nombre: "Encarna"})
 { "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 18, "pais" : "USA" }
 ```
 
-## Edición de un documento con `update()` y `$set`
+## Edición parcial con `updateOne()` y `$set`
 
-De nuevo vamos a modificar la edad de `Encarna`.
+Para cambiar solo algunos campos (sin reemplazar todo el documento), conviene usar `updateOne()` con el operador `$set`. De nuevo vamos a modificar la edad de `Encarna`.
 
 ```console
-> db.usuarios.update( {nombre: "Encarna"}, {$set: {edad: 19} } )
-WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.usuarios.updateOne( {nombre: "Encarna"}, {$set: {edad: 19} } )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
 > db.usuarios.find({nombre: "Encarna"})
 { "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 19, "pais" : "USA" }
 ```
 
 ## Realizar una copia de seguridad de una base de datos
 
-Se puede especificar la ruta de destino donde se guardará la copia de seguridad con la opcion `-o`. Si no se especifica la ruta de destino, se crea el directorio `dump` dentro del directorio actual. Dentro de `dump` se crea otro directorio con el nombre de la base de datos, en este caso `gestion`. Dentro de este último directorio se guardan las colecciones de la base de datos en formato BSON. Observa que el comando `mongodump` se ejecuta desde el terminal de Linux, no desde la *shell* de MongoDB.
+Se puede especificar la ruta de destino donde se guardará la copia de seguridad con la opción `-o`. Si no se especifica la ruta de destino, se crea el directorio `dump` dentro del directorio actual. Dentro de `dump` se crea otro directorio con el nombre de la base de datos, en este caso `gestion`. Dentro de este último directorio se guardan las colecciones de la base de datos en formato BSON. Observa que los comandos `mongodump` y `mongorestore` se ejecutan desde el terminal de Linux (por ejemplo, dentro del contenedor con `bash`), no desde la *shell* de MongoDB.
+
+Como el servidor exige autenticación, hay que indicar usuario y contraseña (las mismas del `docker-compose.yml`):
 
 ```console
-$ mongodump -d gestion
+$ mongodump -u admin -p 123 --authenticationDatabase admin -d gestion
 ```
 
 ## Restaurar una copia de seguridad
 
 ```console
-$ mongorestore -d gestion dump/gestion
+$ mongorestore -u admin -p 123 --authenticationDatabase admin -d gestion dump/gestion
 ```
 
 
@@ -325,8 +350,11 @@ Vamos a eliminar todos los usuarios cuyo atributo `pais` sea `España`.
 { "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Salva", "apellido" : "Mento", "edad" : 35 }
 { "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 19, "pais" : "USA" }
 > 
-> db.usuarios.remove({pais: "España"})
-WriteResult({ "nRemoved" : 1 })
+> db.usuarios.deleteMany({pais: "España"})
+{
+  acknowledged: true,
+  deletedCount: 1
+}
 > 
 > db.usuarios.find()
 { "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
@@ -359,7 +387,7 @@ Vamos a mostrar un listado de los usuarios solo con los campos `nombre` y `edad`
 { "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Salva", "apellido" : "Mento", "edad" : 35 }
 { "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 19, "pais" : "USA" }
 > 
-> db.usuarios.find().count()
+> db.usuarios.countDocuments()
 4
 ```
 
@@ -401,15 +429,15 @@ La función `skip()` permite "saltar" un número determinado de documentos de la
 { "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
 ```
 
-## La función `size()`
+## Contar documentos en un cursor con `skip()` y `limit()`
 
-A diferencia de `count()`, el método `size()` ofrece la cuenta de la consulta una vez filtrada con `skip()`, `limit()`, etc.
+`countDocuments()` cuenta todos los documentos de la colección (o los que cumplan un filtro si se indica). En cambio, si queremos saber cuántos documentos devuelve una consulta concreta tras aplicar `sort()`, `skip()` y `limit()`, convertimos el cursor en array y usamos `.length`:
 
 ```console
-> db.usuarios.find().sort( {apellido: 1} ).skip(1).limit(2).count()
+> db.usuarios.countDocuments()
 4
 > 
-> db.usuarios.find().sort( {apellido: 1} ).skip(1).limit(2).size()
+> db.usuarios.find().sort( {apellido: 1} ).skip(1).limit(2).toArray().length
 2
 ```
 
@@ -419,15 +447,30 @@ Antes de hacer pruebas con la agrupación de documentos, vamos a meter más dato
 
 ```console
 > db.usuarios.insertOne({nombre: "Elsa", apellido: "Pato", edad: 52, pais: "Portugal"})
-WriteResult({ "nInserted" : 1 })
+{
+  acknowledged: true,
+  insertedId: ObjectId('...')
+}
 > db.usuarios.insertOne({nombre: "Armando", apellido: "Bronca", edad: 22, pais: "Francia"})
-WriteResult({ "nInserted" : 1 })
+{
+  acknowledged: true,
+  insertedId: ObjectId('...')
+}
 > db.usuarios.insertOne({nombre: "Leandro", apellido: "Gado", edad: 48, pais: "Venezuela"})
-WriteResult({ "nInserted" : 1 })
+{
+  acknowledged: true,
+  insertedId: ObjectId('...')
+}
 > db.usuarios.insertOne({nombre: "Olga", apellido: "Seosa", edad: 29, pais: "España"})
-WriteResult({ "nInserted" : 1 })
+{
+  acknowledged: true,
+  insertedId: ObjectId('...')
+}
 > db.usuarios.insertOne({nombre: "Elena", apellido: "Nito", edad: 30, pais: "USA"})
-WriteResult({ "nInserted" : 1 })
+{
+  acknowledged: true,
+  insertedId: ObjectId('...')
+}
 > 
 > db.usuarios.find()
 { "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
@@ -519,34 +562,31 @@ Usuarios cuyo nombre comienza por "El".
 > 
 ```
 
-## Ver los documentos en un formato "bonito"
+## Ver los documentos en un formato legible
 
-El método `pretty()` nos permite ver los documentos de una manera bonita y legible. A continuación se compara una consulta sin `pretty()` y otra con `pretty()`.
+En `mongosh`, los resultados de `find()` ya se muestran formateados (con sangría), sin necesidad del antiguo método `pretty()` del shell `mongo`.
 
 ```console
 > db.usuarios.find().limit(3)
-{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
-{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
-{ "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Salva", "apellido" : "Mento", "edad" : 35 }
-> 
-> db.usuarios.find().limit(3).pretty()
-{
-	"_id" : ObjectId("58937be7a70c3985de49a38f"),
-	"nombre" : "Mario",
-	"apellido" : "Neta"
-}
-{
-	"_id" : ObjectId("58937c23a70c3985de49a391"),
-	"nombre" : "Elba",
-	"apellido" : "Lazo",
-	"edad" : 24
-}
-{
-	"_id" : ObjectId("58938745a70c3985de49a392"),
-	"nombre" : "Salva",
-	"apellido" : "Mento",
-	"edad" : 35
-}
+[
+  {
+    _id: ObjectId('58937be7a70c3985de49a38f'),
+    nombre: 'Mario',
+    apellido: 'Neta'
+  },
+  {
+    _id: ObjectId('58937c23a70c3985de49a391'),
+    nombre: 'Elba',
+    apellido: 'Lazo',
+    edad: 24
+  },
+  {
+    _id: ObjectId('58938745a70c3985de49a392'),
+    nombre: 'Salva',
+    apellido: 'Mento',
+    edad: 35
+  }
+]
 ```
 
 
@@ -572,12 +612,7 @@ db.createCollection("empleado", {
 
 ```console
 > db.usuarios.createIndex({nombre: 1})
-{
-	"createdCollectionAutomatically" : false,
-	"numIndexesBefore" : 1,
-	"numIndexesAfter" : 2,
-	"ok" : 1
-}
+nombre_1
 ```
 
 
