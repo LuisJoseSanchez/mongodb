@@ -123,6 +123,15 @@ switched to db prueba
 
 ## Crear objetos (documentos) en memoria
 
+Antes de seguir, vamos a usar la base de datos `gestion`:
+
+```console
+> use gestion
+switched to db gestion
+```
+
+Y ahora, crearemos dos usuarios y los guardaremos en memoria (de momento, no se guardan en disco).
+
 ```console
 > var persona1 = {nombre: "Mario", apellido: "Neta"}
 > var persona2 = {nombre: "Pere", apellido: "Gil", pais: "España"}
@@ -399,18 +408,40 @@ Para cambiar solo algunos campos (sin reemplazar todo el documento), conviene us
 
 ## Realizar una copia de seguridad de una base de datos
 
-Se puede especificar la ruta de destino donde se guardará la copia de seguridad con la opción `-o`. Si no se especifica la ruta de destino, se crea el directorio `dump` dentro del directorio actual. Dentro de `dump` se crea otro directorio con el nombre de la base de datos, en este caso `gestion`. Dentro de este último directorio se guardan las colecciones de la base de datos en formato BSON. Observa que los comandos `mongodump` y `mongorestore` se ejecutan desde el terminal de Linux (por ejemplo, dentro del contenedor con `bash`), no desde la *shell* de MongoDB.
+Para grabar o restaurar copias de seguridad, se usan los comandos `mongodump` y `mongorestore` respectivamente.
 
-Como el servidor exige autenticación, hay que indicar usuario y contraseña (las mismas del `docker-compose.yml`):
+Estos comandos se ejecutan desde el terminal de Linux (por ejemplo, dentro del contenedor con `bash`), no desde la *shell* de MongoDB.
+
+Así que hay que salirse antes de usarlos:
 
 ```console
-$ mongodump -u admin -p 123 --authenticationDatabase admin -d gestion
+exit
+```
+
+Se puede especificar la ruta de destino donde se guardará la copia de seguridad con la opción `-o`. Si no se especifica la ruta de destino, se guarda dentro de una carpeta `dump` dentro del directorio actual.
+
+Como el servidor exige autenticación, hay que indicar usuario y contraseña (las mismas del `docker-compose.yml`).
+
+Antes de hacer la copia de seguridad, nos colocaremos en `/data/db/` que la tenemos mapeada a `mongo` en local. Así podremos ver en nuestro navegador de archivos cómo se van creando los ficheros.
+
+```console
+mongodump -u admin -p 123 --authenticationDatabase admin -d gestion
+```
+
+La copia de seguridad se guardan en formato BSON.
+
+Los `.bson` de `mongodump` son binarios; un editor de texto no sirve para leerlos.
+
+Se puede guardar en formato JSON con `mongoexport`:
+
+```console
+mongoexport -u admin -p 123 --authenticationDatabase admin -d gestion -c usuarios --jsonArray
 ```
 
 ## Restaurar una copia de seguridad
 
 ```console
-$ mongorestore -u admin -p 123 --authenticationDatabase admin -d gestion dump/gestion
+mongorestore -u admin -p 123 --authenticationDatabase admin -d gestion dump/gestion
 ```
 
 
