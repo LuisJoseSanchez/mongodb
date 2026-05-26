@@ -232,64 +232,86 @@ Observa que a cada elemento insertado se le asigna de forma automática un ident
 `$ne` significa *not equal*, `$gt` es *greater than* y `$lt` es *less than*.
 
 ```console
-> db.usuarios.find( { nombre: {$ne: "Elba"} } )
-{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
-{ "_id" : ObjectId("58937beca70c3985de49a390"), "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
-> 
-> db.usuarios.find( { pais: {$ne: "España"} } )
-{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
-{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
-> 
-> db.usuarios.find( { edad: {$gt: 18} } )
-{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
-> 
-> db.usuarios.find( { edad: {$lt: 18} } )
+> db.usuarios.find({pais: {$ne: "España"}})
+[
+  {
+    _id: ObjectId('6a15ac04bd74d90614d1a7bb'),
+    nombre: 'Mario',
+    apellido: 'Neta'
+  },
+  {
+    _id: ObjectId('6a15ac6dbd74d90614d1a7bd'),
+    nombre: 'Elba',
+    apellido: 'Lazo',
+    edad: 24
+  }
+]
+>
+> db.usuarios.find({ edad: {$gt: 18}})
+[
+  {
+    _id: ObjectId('6a15ac6dbd74d90614d1a7bd'),
+    nombre: 'Elba',
+    apellido: 'Lazo',
+    edad: 24
+  }
+]
+>
+> db.usuarios.find({edad: {$lt: 18}})
+
 ```
 
 ## Insertar varios documentos al mismo tiempo
 
-Mediante `insertMany` se pueden insertar varios documentos a la vez pasando un array.
+Mediante `insertMany` se pueden insertar varios documentos a la vez pasando un array como parámetro.
 
 ```console
-> var p1 = { nombre: "Lola", apellido: "Mento", edad: 35 }
-> var p2 = { nombre: "Encarna", apellido: "Vales", edad: 17, pais: "USA" }
-> db.usuarios.insertMany( [p1, p2] )
+> var p1 = {nombre: "Lola", apellido: "Mento", edad: 35}
+> var p2 = {nombre: "Encarna", apellido: "Vales", edad: 17, pais: "USA"}
+> db.usuarios.insertMany([p1, p2])
 {
   acknowledged: true,
   insertedIds: {
-    '0': ObjectId('...'),
-    '1': ObjectId('...')
+    '0': ObjectId('6a15b091bd74d90614d1a7be'),
+    '1': ObjectId('6a15b091bd74d90614d1a7bf')
   }
 }
-> db.usuarios.find()
-{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
-{ "_id" : ObjectId("58937beca70c3985de49a390"), "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
-{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
-{ "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Lola", "apellido" : "Mento", "edad" : 35 }
-{ "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 17, "pais" : "USA" }
+>
+> db.usuarios.find({}, {_id: false})
+[
+  { nombre: 'Mario', apellido: 'Neta' },
+  { nombre: 'Pere', apellido: 'Gil', pais: 'España' },
+  { nombre: 'Elba', apellido: 'Lazo', edad: 24 },
+  { nombre: 'Lola', apellido: 'Mento', edad: 35 },
+  { nombre: 'Encarna', apellido: 'Vales', edad: 17, pais: 'USA' }
+]
 ```
 
 
 ## Edición de un documento con `replaceOne()`
 
 ```console
-> var persona = db.usuarios.findOne({ "_id" : ObjectId("58938745a70c3985de49a392")})
+> var persona = db.usuarios.findOne({ "_id" : ObjectId("6a15b091bd74d90614d1a7be")})
+
 > persona
 {
-	"_id" : ObjectId("58938745a70c3985de49a392"),
-	"nombre" : "Lola",
-	"apellido" : "Mento",
-	"edad" : 35
+  _id: ObjectId('6a15b091bd74d90614d1a7be'),
+  nombre: 'Lola',
+  apellido: 'Mento',
+  edad: 35
 }
+
 > persona.nombre = "Salva"
 Salva
+
 > persona
 {
-	"_id" : ObjectId("58938745a70c3985de49a392"),
-	"nombre" : "Salva",
-	"apellido" : "Mento",
-	"edad" : 35
+  _id: ObjectId('6a15b091bd74d90614d1a7be'),
+  nombre: 'Salva',
+  apellido: 'Mento',
+  edad: 35
 }
+
 > db.usuarios.replaceOne({ _id: persona._id }, persona)
 {
   acknowledged: true,
@@ -298,12 +320,15 @@ Salva
   modifiedCount: 1,
   upsertedCount: 0
 }
-> db.usuarios.find()
-{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
-{ "_id" : ObjectId("58937beca70c3985de49a390"), "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
-{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
-{ "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Salva", "apellido" : "Mento", "edad" : 35 }
-{ "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 17, "pais" : "USA" }
+
+> db.usuarios.find({}, {_id: false})
+[
+  { nombre: 'Mario', apellido: 'Neta' },
+  { nombre: 'Pere', apellido: 'Gil', pais: 'España' },
+  { nombre: 'Elba', apellido: 'Lazo', edad: 24 },
+  { nombre: 'Salva', apellido: 'Mento', edad: 35 },
+  { nombre: 'Encarna', apellido: 'Vales', edad: 17, pais: 'USA' }
+]
 ```
 
 :warning: Cuidado al guardar el documento en una variable. Hay que usar `findOne()` ya que utilizando `find()` el valor de la variable se pierde. Otra opción es volcar el resultado de la consulta en un array con `find().toArray`.
