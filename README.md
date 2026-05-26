@@ -90,17 +90,6 @@ De igual modo, si queremos salirnos del `bash` del contenedor, tecleamos otra ve
 
 Y si queremos parar el contenedor, nos situamos en la pestaña del terminal donde lo lanzamos y pulsamos las teclas `Control + C`.
 
-## Crear objetos (documentos)
-
-```console
-> var persona1 = {nombre: "Mario", apellido: "Neta"}
-> var persona2 = {nombre: "Pere", apellido: "Gil", pais: "España"}
-> persona1
-{ "nombre" : "Mario", "apellido" : "Neta" }
-> persona2
-{ "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
-```
-
 ## Ver bases de datos existentes
 
 ```console
@@ -132,16 +121,27 @@ switched to db prueba
 { "dropped" : "usuarios", "ok" : 1 }
 ```
 
+## Crear objetos (documentos) en memoria
+
+```console
+> var persona1 = {nombre: "Mario", apellido: "Neta"}
+> var persona2 = {nombre: "Pere", apellido: "Gil", pais: "España"}
+> persona1
+{ "nombre" : "Mario", "apellido" : "Neta" }
+> persona2
+{ "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
+```
+
 ## Grabar datos
 
 Vamos a grabar datos en la colección `usuarios` dentro de la base de datos `gestion`. Una colección es el equivalente a una tabla en las bases de datos relacionales.
 
 ```console
-> db.usuarios.insert(persona1)
+> db.usuarios.insertOne(persona1)
 WriteResult({ "nInserted" : 1 })
-> db.usuarios.insert(persona2)
+> db.usuarios.insertOne(persona2)
 WriteResult({ "nInserted" : 1 })
-> db.usuarios.insert({nombre: "Elba", apellido: "Lazo", edad: 24})
+> db.usuarios.insertOne({nombre: "Elba", apellido: "Lazo", edad: 24})
 WriteResult({ "nInserted" : 1 })
 ```
 
@@ -153,7 +153,6 @@ Observa que los documentos insertados (los datos sobre personas) no tienen por q
 > show collections
 usuarios
 ```
-
 
 ## Ver el contenido de una colección
 
@@ -215,7 +214,7 @@ Mediante `insert` se puede insertar un elemento o bien un array con varios eleme
 ```console
 > var p1 = { nombre: "Lola", apellido: "Mento", edad: 35 }
 > var p2 = { nombre: "Encarna", apellido: "Vales", edad: 17, pais: "USA" }
-> db.usuarios.insert( [p1, p2] )
+> db.usuarios.insertMany( [p1, p2] )
 BulkWriteResult({
 	"writeErrors" : [ ],
 	"writeConcernErrors" : [ ],
@@ -419,15 +418,15 @@ A diferencia de `count()`, el método `size()` ofrece la cuenta de la consulta u
 Antes de hacer pruebas con la agrupación de documentos, vamos a meter más datos en nuestra colección de usuarios.
 
 ```console
-> db.usuarios.insert({nombre: "Elsa", apellido: "Pato", edad: 52, pais: "Portugal"})
+> db.usuarios.insertOne({nombre: "Elsa", apellido: "Pato", edad: 52, pais: "Portugal"})
 WriteResult({ "nInserted" : 1 })
-> db.usuarios.insert({nombre: "Armando", apellido: "Bronca", edad: 22, pais: "Francia"})
+> db.usuarios.insertOne({nombre: "Armando", apellido: "Bronca", edad: 22, pais: "Francia"})
 WriteResult({ "nInserted" : 1 })
-> db.usuarios.insert({nombre: "Leandro", apellido: "Gado", edad: 48, pais: "Venezuela"})
+> db.usuarios.insertOne({nombre: "Leandro", apellido: "Gado", edad: 48, pais: "Venezuela"})
 WriteResult({ "nInserted" : 1 })
-> db.usuarios.insert({nombre: "Olga", apellido: "Seosa", edad: 29, pais: "España"})
+> db.usuarios.insertOne({nombre: "Olga", apellido: "Seosa", edad: 29, pais: "España"})
 WriteResult({ "nInserted" : 1 })
-> db.usuarios.insert({nombre: "Elena", apellido: "Nito", edad: 30, pais: "USA"})
+> db.usuarios.insertOne({nombre: "Elena", apellido: "Nito", edad: 30, pais: "USA"})
 WriteResult({ "nInserted" : 1 })
 > 
 > db.usuarios.find()
@@ -581,12 +580,4 @@ db.createCollection("empleado", {
 }
 ```
 
-## 
 
-```console
-```
-
-## 
-
-```console
-```
