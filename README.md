@@ -21,7 +21,7 @@ services:
 
 Se puede editar al gusto para cambiar el puerto o los datos del usuario administrador de la base de datos.
 
-Nótese que la carpeta `/data/db` del contenedor está mapeada a la carpeta `mongo` de la máquina local. En esta carpeta se guardarán los datos, de tal forma que los podremos recuperar aunque se pare, o incluso se elimine, el contenedor. Esa carpeta no se sube al repositorio (está en `.gitignore`).
+Nótese que la carpeta `/data/db` del contenedor está mapeada a la carpeta `mongo` de la máquina local. En esta carpeta se guardarán los datos, de tal forma que los podremos recuperar aunque se pare, o incluso se elimine, el contenedor.
 
 ## Pasos a seguir para ejecutar MongoDB
 
@@ -93,8 +93,9 @@ Y si queremos parar el contenedor, nos situamos en la pestaña del terminal dond
 
 ```console
 > show databases
-admin  0.000GB
-local  0.000GB
+admin   100.00 KiB
+config   12.00 KiB
+local    72.00 KiB
 ```
 
 ## Usar una base de datos (existente o no)
@@ -139,17 +140,17 @@ Vamos a grabar datos en la colección `usuarios` dentro de la base de datos `ges
 > db.usuarios.insertOne(persona1)
 {
   acknowledged: true,
-  insertedId: ObjectId('...')
+  insertedId: ObjectId('6a15ac04bd74d90614d1a7bb')
 }
 > db.usuarios.insertOne(persona2)
 {
   acknowledged: true,
-  insertedId: ObjectId('...')
+  insertedId: ObjectId('6a15ac61bd74d90614d1a7bc')
 }
 > db.usuarios.insertOne({nombre: "Elba", apellido: "Lazo", edad: 24})
 {
   acknowledged: true,
-  insertedId: ObjectId('...')
+  insertedId: ObjectId('6a15ac6dbd74d90614d1a7bd')
 }
 ```
 
@@ -168,9 +169,25 @@ Sería el equivalente a `SELECT * FROM usuarios` en una base de datos relacional
 
 ```console
 > db.usuarios.find()
-{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
-{ "_id" : ObjectId("58937beca70c3985de49a390"), "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
-{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
+[
+  {
+    _id: ObjectId('6a15ac04bd74d90614d1a7bb'),
+    nombre: 'Mario',
+    apellido: 'Neta'
+  },
+  {
+    _id: ObjectId('6a15ac61bd74d90614d1a7bc'),
+    nombre: 'Pere',
+    apellido: 'Gil',
+    pais: 'España'
+  },
+  {
+    _id: ObjectId('6a15ac6dbd74d90614d1a7bd'),
+    nombre: 'Elba',
+    apellido: 'Lazo',
+    edad: 24
+  }
+]
 ```
 
 Observa que a cada elemento insertado se le asigna de forma automática un identificador único.
@@ -190,10 +207,24 @@ Observa que a cada elemento insertado se le asigna de forma automática un ident
 
 ```console
 > db.usuarios.find({nombre: "Elba"})
-{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
-> 
+[
+  {
+    _id: ObjectId('6a15ac6dbd74d90614d1a7bd'),
+    nombre: 'Elba',
+    apellido: 'Lazo',
+    edad: 24
+  }
+]
+>
 > db.usuarios.find({pais: "España"})
-{ "_id" : ObjectId("58937beca70c3985de49a390"), "nombre" : "Pere", "apellido" : "Gil", "pais" : "España" }
+[
+  {
+    _id: ObjectId('6a15ac61bd74d90614d1a7bc'),
+    nombre: 'Pere',
+    apellido: 'Gil',
+    pais: 'España'
+  }
+]
 ```
 
 ## Búsqueda condicional II
