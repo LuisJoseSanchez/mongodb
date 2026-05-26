@@ -1,0 +1,2 @@
+# Datos persistentes de MongoDB (volumen Docker: ./mongo -> /data/db)
+mongo/
