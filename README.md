@@ -331,7 +331,7 @@ Salva
 ]
 ```
 
-:warning: Cuidado al guardar el documento en una variable. Hay que usar `findOne()` ya que utilizando `find()` el valor de la variable se pierde. Otra opción es volcar el resultado de la consulta en un array con `find().toArray`.
+:warning: Para modificar y guardar un documento "único" en una variable, usa `findOne()` (devuelve un documento). `find()` devuelve un cursor (lista de documentos), así que no puedes tratarlo directamente como si fuera un solo documento; si hace falta, primero conviértelo a array con `find().toArray()` y luego selecciona el elemento.
 
 ## Edición de un documento sustituyendo el documento completo
 
@@ -340,14 +340,16 @@ Vamos a modificar la edad del usuario cuyo nombre es `Encarna`, cargando el docu
 ```console
 > p = db.usuarios.findOne({nombre: "Encarna"})
 {
-	"_id" : ObjectId("58938745a70c3985de49a393"),
-	"nombre" : "Encarna",
-	"apellido" : "Vales",
-	"edad" : 17,
-	"pais" : "USA"
+  _id: ObjectId('6a15b091bd74d90614d1a7bf'),
+  nombre: 'Encarna',
+  apellido: 'Vales',
+  edad: 17,
+  pais: 'USA'
 }
+
 > p.edad = 18
 18
+
 > db.usuarios.replaceOne({nombre: "Encarna"}, p)
 {
   acknowledged: true,
@@ -356,8 +358,17 @@ Vamos a modificar la edad del usuario cuyo nombre es `Encarna`, cargando el docu
   modifiedCount: 1,
   upsertedCount: 0
 }
+
 > db.usuarios.find({nombre: "Encarna"})
-{ "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 18, "pais" : "USA" }
+[
+  {
+    _id: ObjectId('6a15b091bd74d90614d1a7bf'),
+    nombre: 'Encarna',
+    apellido: 'Vales',
+    edad: 18,
+    pais: 'USA'
+  }
+]
 ```
 
 ## Edición parcial con `updateOne()` y `$set`
@@ -365,7 +376,7 @@ Vamos a modificar la edad del usuario cuyo nombre es `Encarna`, cargando el docu
 Para cambiar solo algunos campos (sin reemplazar todo el documento), conviene usar `updateOne()` con el operador `$set`. De nuevo vamos a modificar la edad de `Encarna`.
 
 ```console
-> db.usuarios.updateOne( {nombre: "Encarna"}, {$set: {edad: 19} } )
+> db.usuarios.updateOne({nombre: "Encarna"}, {$set: {edad: 19}})
 {
   acknowledged: true,
   insertedId: null,
@@ -373,8 +384,17 @@ Para cambiar solo algunos campos (sin reemplazar todo el documento), conviene us
   modifiedCount: 1,
   upsertedCount: 0
 }
+
 > db.usuarios.find({nombre: "Encarna"})
-{ "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 19, "pais" : "USA" }
+[
+  {
+    _id: ObjectId('6a15b091bd74d90614d1a7bf'),
+    nombre: 'Encarna',
+    apellido: 'Vales',
+    edad: 19,
+    pais: 'USA'
+  }
+]
 ```
 
 ## Realizar una copia de seguridad de una base de datos
