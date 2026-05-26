@@ -41,33 +41,54 @@ Si hacemos `ls`, debemos ver el archivo `docker-compose.yml`:
 
 ```console
 ls
+docker-compose.yml
+README.md
 ```
 
-### Instalar los paquetes de MongoDB
+### 3. Lanzar el contenedor
 
 ```console
-sudo apt-get install -y mongodb-org
+docker compose up
 ```
 
-### Lanzar el demonio
+Es conveniente abrir otra pestaña en la terminal para comprobar que el contenedor está funcionando:
 
 ```console
-sudo service mongod start
+docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS              PORTS                                             NAMES
+bec0ea6cdfa3   mongo:8   "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:27017->27017/tcp, [::]:27017->27017/tcp   mongodb-mongodb-1
 ```
 
-### Arranque automático del servicio
+### 4. Ejecutar un terminal de bash dentro del contenedor
 
-Si vamos a utilizar con frecuencia MongoDB, lo mejor es hacer que el demonio se lance de forma automática cada vez que arranca el sistema.
+Ejecutamos, de forma interactiva, el intérprete de comandos `bash` dentro del contenedor. En la práctica, esto significa meterse dentro del contenedor para ejecutar comandos.
 
 ```console
-sudo systemctl enable mongod.service
+docker exec -it mongodb-mongodb-1 bash
 ```
 
-## Ejecutar el interfaz de línea de comandos de MongoDB
+Podemos echar un vistazo para ver los archivos que tenemos dentro del contenedor:
 
 ```console
-mongo
+root@bec0ea6cdfa3:/# ls
+bin  boot  data  dev  docker-entrypoint-initdb.d  etc  home  js-yaml.js  lib  media  mnt  opt  proc  root  run	sbin  srv  sys	tmp  usr  var
 ```
+
+### 5. Ejecutar el interfaz de línea de comandos de MongoDB
+
+```console
+mongosh -username admin
+```
+
+Se pedirá la clave que, tal como se especificó en el fichero `docker-compose.yml` es `123`.
+
+A partir de ahora, ya podemos ejecutar comandos de MongoDB para crear bases de datos, crear colecciones, insertar documentos, mostrar listados, etc.
+
+Nos podremos salir en cualquier momento del intérprete de MongoDB con `exit`.
+
+De igual modo, si queremos salirnos del `bash` del contenedor, tecleamos otra vez `exit`.
+
+Y si queremos parar el contenedor, nos situamos en la pestaña del terminal donde lo lanzamos y pulsamos las teclas `Control + C`.
 
 ## Crear objetos (documentos)
 
