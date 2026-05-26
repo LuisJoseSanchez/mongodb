@@ -1,25 +1,46 @@
 # Introducción a MongoDB (actualizado a la versión 8)
 
-## Instalación de MongoDB
+## MongoDB con Docker
 
-Esta instalación ha sido probada en **Ubuntu 16.10**. Para otras plataformas ir a la [página oficial de MongoDB](https://www.mongodb.com/es).
+Usaremos un contenedor Docker para probar MongoDB sin tener que instalar ni configurar nada en la máquina local.
 
-### Importar la clave pública
+Tan solo necesitaremos el siguiente `docker-compose.yml`:
 
-```console
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+```yaml
+services:
+  mongodb:
+    image: mongo:8
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=123
 ```
 
-### Crear una lista de ficheros para MongoDB
+Se puede editar al gusto para cambiar el puerto o los datos del usuario administrador de la base de datos.
+
+Nótese que la carpeta `/data/db` del contenedor está mapeada a la carpeta `mongo` de la máquina local. En esta carpeta se guardarán los datos, de tal forma que los podremos recuperar aunque se pare, o incluso se elimine, el contenedor.
+
+## Pasos a seguir para ejecutar MongoDB
+
+### 1. Clonar el repositorio
 
 ```console
-echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+git clone https://github.com/LuisJoseSanchez/mongodb.git
 ```
 
-### Actualizar la base de datos local que contiene información sobre los paquetes
+### 2. Entrar en la carpeta del repositorio
 
 ```console
-sudo apt-get update
+cd mongodb
+```
+
+Si hacemos `ls`, debemos ver el archivo `docker-compose.yml`:
+
+```console
+ls
 ```
 
 ### Instalar los paquetes de MongoDB
