@@ -1,0 +1,27 @@
+[
+    {
+        "nombre": "Mario",
+        "apellido": "Neta"
+    },
+    {
+        "nombre": "Pere",
+        "apellido": "Gil",
+        "pais": "España"
+    },
+    {
+        "nombre": "Elba",
+        "apellido": "Lazo",
+        "edad": 24
+    },
+    {
+        "nombre": "Salva",
+        "apellido": "Mento",
+        "edad": 35
+    },
+    {
+        "nombre": "Encarna",
+        "apellido": "Vales",
+        "edad": 19,
+        "pais": "USA"
+    }
+]

@@ -1,0 +1,42 @@
+[
+    {
+        "_id": {
+            "$oid": "6a15ac04bd74d90614d1a7bb"
+        },
+        "nombre": "Mario",
+        "apellido": "Neta"
+    },
+    {
+        "_id": {
+            "$oid": "6a15ac61bd74d90614d1a7bc"
+        },
+        "nombre": "Pere",
+        "apellido": "Gil",
+        "pais": "España"
+    },
+    {
+        "_id": {
+            "$oid": "6a15ac6dbd74d90614d1a7bd"
+        },
+        "nombre": "Elba",
+        "apellido": "Lazo",
+        "edad": 24
+    },
+    {
+        "_id": {
+            "$oid": "6a15b091bd74d90614d1a7be"
+        },
+        "nombre": "Salva",
+        "apellido": "Mento",
+        "edad": 35
+    },
+    {
+        "_id": {
+            "$oid": "6a15b091bd74d90614d1a7bf"
+        },
+        "nombre": "Encarna",
+        "apellido": "Vales",
+        "edad": 19,
+        "pais": "USA"
+    }
+]
