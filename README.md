@@ -340,7 +340,7 @@ Salva
 ]
 ```
 
-:warning: Para modificar y guardar un documento "único" en una variable, usa `findOne()` (devuelve un documento). `find()` devuelve un cursor (lista de documentos), así que no puedes tratarlo directamente como si fuera un solo documento; si hace falta, primero conviértelo a array con `find().toArray()` y luego selecciona el elemento.
+:warning: Para modificar y guardar un documento "único" en una variable, hay que usar `findOne()`, que devuelve un documento. Sin embargo, `find()` devuelve un cursor (lista de documentos) y haría falta convertir esa lista en array con `find().toArray()` y luego seleccionar el elemento.
 
 ## Edición de un documento sustituyendo el documento completo
 
@@ -425,6 +425,7 @@ Como el servidor exige autenticación, hay que indicar usuario y contraseña (la
 Antes de hacer la copia de seguridad, nos colocaremos en `/data/db/` que la tenemos mapeada a `mongo` en local. Así podremos ver en nuestro navegador de archivos cómo se van creando los ficheros.
 
 ```console
+cd /data/db/
 mongodump -u admin -p 123 --authenticationDatabase admin -d gestion
 ```
 
