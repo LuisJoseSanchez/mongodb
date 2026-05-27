@@ -1,0 +1,12 @@
+[
+  { "nombre": "Elsa", "apellido": "Pato", "edad": 52, "pais": "Portugal" },
+
+  { "nombre": "Armando", "apellido": "Bronca", "edad": 22, "pais": "Francia" },
+  
+  { "nombre": "Leandro", "apellido": "Gado", "edad": 48, "pais": "Venezuela" },
+  
+  { "nombre": "Olga", "apellido": "Seosa", "edad": 29, "pais": "España" },
+  
+  { "nombre": "Elena", "apellido": "Nito", "edad": 30, "pais": "USA" }
+]
+

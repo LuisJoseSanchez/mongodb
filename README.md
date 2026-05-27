@@ -596,7 +596,7 @@ Antes de hacer pruebas con la agrupación de documentos, vamos a meter más dato
 Vamos a mostrar todos los países de donde son los usuarios.
 
 ```console
-> db.usuarios.aggregate( [ {$group: {_id: "$pais"}} ] )
+> db.usuarios.aggregate([{$group: {_id: "$pais"}}])
 { "_id" : "Venezuela" }
 { "_id" : "Francia" }
 { "_id" : null }
@@ -608,7 +608,7 @@ Vamos a mostrar todos los países de donde son los usuarios.
 Ahora igual pero diciendo cuántas veces se repite cada pais.
 
 ```console
-> db.usuarios.aggregate( [ {$group: {_id: "$pais", repetidos: {$sum: 1}}} ] )
+> db.usuarios.aggregate([{$group: {_id: "$pais", repetidos: {$sum: 1}}}])
 { "_id" : "Venezuela", "repetidos" : 1 }
 { "_id" : "Francia", "repetidos" : 1 }
 { "_id" : null, "repetidos" : 3 }
@@ -620,7 +620,15 @@ Ahora igual pero diciendo cuántas veces se repite cada pais.
 Igual y además con la media de edad por pais.
 
 ```console
-> db.usuarios.aggregate( [ {$group: {_id: "$pais", repetidos: {$sum: 1}, "edad media": {$avg: "$edad"}}} ] )
+> db.usuarios.aggregate([
+    {
+      $group: {
+        _id: "$pais",
+        repetidos: {$sum: 1},
+        "edad media": {$avg: "$edad"}
+      }
+    }
+  ])
 { "_id" : "Venezuela", "repetidos" : 1, "edad media" : 48 }
 { "_id" : "Francia", "repetidos" : 1, "edad media" : 22 }
 { "_id" : null, "repetidos" : 3, "edad media" : 29.5 }
@@ -632,7 +640,18 @@ Igual y además con la media de edad por pais.
 Igual que todo lo anterior y además excluyendo los valores `null` para el atributo `pais`.
 
 ```console
-> db.usuarios.aggregate( [ {$match: {pais: {$ne: null}}}, {$group: {_id: "$pais", repetidos: {$sum: 1}, "edad media": {$avg: "$edad"}}} ])
+> db.usuarios.aggregate([
+    {
+      $match: {pais: {$ne: null}}
+    },
+    {
+      $group: {
+        _id: "$pais",
+        repetidos: {$sum: 1},
+        "edad media": {$avg: "$edad"}
+      }
+    }
+  ])
 { "_id" : "Venezuela", "repetidos" : 1, "edad media" : 48 }
 { "_id" : "España", "repetidos" : 2, "edad media" : 29 }
 { "_id" : "USA", "repetidos" : 2, "edad media" : 23.5 }
