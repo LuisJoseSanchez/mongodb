@@ -557,27 +557,27 @@ Antes de hacer pruebas con la agrupación de documentos, vamos a meter más dato
 > db.usuarios.insertOne({nombre: "Elsa", apellido: "Pato", edad: 52, pais: "Portugal"})
 {
   acknowledged: true,
-  insertedId: ObjectId('...')
+  insertedId: ObjectId('5895b74415c260814ec7f139')
 }
 > db.usuarios.insertOne({nombre: "Armando", apellido: "Bronca", edad: 22, pais: "Francia"})
 {
   acknowledged: true,
-  insertedId: ObjectId('...')
+  insertedId: ObjectId('5895b77215c260814ec7f13a')
 }
 > db.usuarios.insertOne({nombre: "Leandro", apellido: "Gado", edad: 48, pais: "Venezuela"})
 {
   acknowledged: true,
-  insertedId: ObjectId('...')
+  insertedId: ObjectId('5895b7d915c260814ec7f13b')
 }
 > db.usuarios.insertOne({nombre: "Olga", apellido: "Seosa", edad: 29, pais: "España"})
 {
   acknowledged: true,
-  insertedId: ObjectId('...')
+  insertedId: ObjectId('5895b88815c260814ec7f13c')
 }
 > db.usuarios.insertOne({nombre: "Elena", apellido: "Nito", edad: 30, pais: "USA"})
 {
   acknowledged: true,
-  insertedId: ObjectId('...')
+  insertedId: ObjectId('5895b8ab15c260814ec7f13d')
 }
 > 
 > db.usuarios.find()
