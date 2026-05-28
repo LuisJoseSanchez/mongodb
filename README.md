@@ -297,7 +297,49 @@ Mediante `insertMany` se pueden insertar varios documentos a la vez pasando un a
 ```
 
 
-## Edición de un documento con `replaceOne()`
+## Edición de un documento sustituyendo el documento completo
+
+Vamos a modificar la edad del usuario cuyo nombre es `Encarna`, cargando el documento en una variable y guardándolo con `replaceOne()`.
+
+```console
+> encarna = db.usuarios.findOne({nombre: "Encarna"})
+{
+  _id: ObjectId('6a15b091bd74d90614d1a7bf'),
+  nombre: 'Encarna',
+  apellido: 'Vales',
+  edad: 17,
+  pais: 'USA'
+}
+
+> encarna.edad = 18
+18
+
+> db.usuarios.replaceOne({nombre: "Encarna"}, encarna)
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+> db.usuarios.find({nombre: "Encarna"})
+[
+  {
+    _id: ObjectId('6a15b091bd74d90614d1a7bf'),
+    nombre: 'Encarna',
+    apellido: 'Vales',
+    edad: 18,
+    pais: 'USA'
+  }
+]
+```
+
+:warning: Para modificar y guardar un documento "único" en una variable, hay que usar `findOne()`, que devuelve un documento. Sin embargo, `find()` devuelve un cursor (lista de documentos) y haría falta convertir esa lista en array con `find().toArray()` y luego seleccionar el elemento.
+
+En una base de datos con muchos registros, sería peligroso usar el nombre como referencia para seleccionar un elemento que se quiere modificar. Sabemos que sólo hay una "Encarna" en nuestra base de datos y no habrá problemas pero, por regla general, es mejor usar el identificador.
+
+Veamos otro ejemplo de modificiación, esta vez usando el identificador.
 
 ```console
 > var persona = db.usuarios.findOne({ "_id" : ObjectId("6a15b091bd74d90614d1a7be")})
@@ -340,45 +382,6 @@ Salva
 ]
 ```
 
-:warning: Para modificar y guardar un documento "único" en una variable, hay que usar `findOne()`, que devuelve un documento. Sin embargo, `find()` devuelve un cursor (lista de documentos) y haría falta convertir esa lista en array con `find().toArray()` y luego seleccionar el elemento.
-
-## Edición de un documento sustituyendo el documento completo
-
-Vamos a modificar la edad del usuario cuyo nombre es `Encarna`, cargando el documento en una variable y guardándolo con `replaceOne()`.
-
-```console
-> p = db.usuarios.findOne({nombre: "Encarna"})
-{
-  _id: ObjectId('6a15b091bd74d90614d1a7bf'),
-  nombre: 'Encarna',
-  apellido: 'Vales',
-  edad: 17,
-  pais: 'USA'
-}
-
-> p.edad = 18
-18
-
-> db.usuarios.replaceOne({nombre: "Encarna"}, p)
-{
-  acknowledged: true,
-  insertedId: null,
-  matchedCount: 1,
-  modifiedCount: 1,
-  upsertedCount: 0
-}
-
-> db.usuarios.find({nombre: "Encarna"})
-[
-  {
-    _id: ObjectId('6a15b091bd74d90614d1a7bf'),
-    nombre: 'Encarna',
-    apellido: 'Vales',
-    edad: 18,
-    pais: 'USA'
-  }
-]
-```
 
 ## Edición parcial con `updateOne()` y `$set`
 
