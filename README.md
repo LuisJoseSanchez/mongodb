@@ -694,7 +694,7 @@ Usuarios cuyo nombre comienza por "El".
 En `mongosh`, los resultados de `find()` ya se muestran formateados (con sangría), sin necesidad del antiguo método `pretty()` del shell `mongo`.
 
 ```console
-> db.usuarios.find().limit(3)
+> db.usuarios.find().limit(3).pretty()
 [
   {
     _id: ObjectId('58937be7a70c3985de49a38f'),
