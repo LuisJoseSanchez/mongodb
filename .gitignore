@@ -1,2 +1,6 @@
 # Datos persistentes de MongoDB (volumen Docker: ./mongo -> /data/db)
 mongo/
+
+# macOS Finder metadata
+.DS_Store
+**/.DS_Store
