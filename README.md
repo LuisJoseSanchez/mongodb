@@ -488,20 +488,6 @@ Vamos a mostrar un listado de los usuarios solo con los campos `nombre` y `edad`
 { "nombre" : "Encarna", "edad" : 19 }
 ```
 
-
-## Contar documentos
-
-```console
-> db.usuarios.find()
-{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
-{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
-{ "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Salva", "apellido" : "Mento", "edad" : 35 }
-{ "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 19, "pais" : "USA" }
-> 
-> db.usuarios.countDocuments()
-4
-```
-
 ## Consultas ordenadas
 
 El valor `1` se utiliza para realizar una consulta en orden ascendente y el `-1` para descendente. Con `limit()` se puede limitar el resultado a un número máximo de documentos.
@@ -538,6 +524,21 @@ La función `skip()` permite "saltar" un número determinado de documentos de la
 > db.usuarios.find().sort( {apellido: 1} ).skip(1).limit(2)
 { "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Salva", "apellido" : "Mento", "edad" : 35 }
 { "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
+```
+
+## Contar documentos
+
+Podemos contar el número de documentos con `countDocuments()`. Sería el equivalente al `COUNT(*)` de SQL.
+
+```console
+> db.usuarios.find()
+{ "_id" : ObjectId("58937be7a70c3985de49a38f"), "nombre" : "Mario", "apellido" : "Neta" }
+{ "_id" : ObjectId("58937c23a70c3985de49a391"), "nombre" : "Elba", "apellido" : "Lazo", "edad" : 24 }
+{ "_id" : ObjectId("58938745a70c3985de49a392"), "nombre" : "Salva", "apellido" : "Mento", "edad" : 35 }
+{ "_id" : ObjectId("58938745a70c3985de49a393"), "nombre" : "Encarna", "apellido" : "Vales", "edad" : 19, "pais" : "USA" }
+> 
+> db.usuarios.countDocuments()
+4
 ```
 
 ## Contar documentos en un cursor con `skip()` y `limit()`
