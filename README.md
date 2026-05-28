@@ -697,53 +697,6 @@ Usuarios cuyo nombre comienza por "El".
 
 En `mongosh`, los resultados de `find()` ya se muestran formateados (con sangría), sin necesidad del antiguo método `pretty()` del shell `mongo`.
 
-```console
-> db.usuarios.find().limit(3).pretty()
-[
-  {
-    _id: ObjectId('58937be7a70c3985de49a38f'),
-    nombre: 'Mario',
-    apellido: 'Neta'
-  },
-  {
-    _id: ObjectId('58937c23a70c3985de49a391'),
-    nombre: 'Elba',
-    apellido: 'Lazo',
-    edad: 24
-  },
-  {
-    _id: ObjectId('58938745a70c3985de49a392'),
-    nombre: 'Salva',
-    apellido: 'Mento',
-    edad: 35
-  }
-]
-```
 
-
-## Crear colecciones con validación de atributos
-
-Al crear una colección, se puede indicar a MongoDB que los atributos sean de un tipo concreto o que cumplan con un determinado patrón.
-
-Vamos a crear una nueva colección llamada `empleado` cuyo atributo nombre será de tipo `string`, `sueldo` será de tipo `number` y `email` deberá contener un símbolo `@`.
-
-```console
-db.createCollection("empleado", {
-  validator: {
-    $and: [
-      { nombre: {$type: "string"} },
-      { sueldo: {$type: "number"} },
-      { email: {$regex: /@/} }
-    ]
-  }
-})
-```
-
-## Crear índices
-
-```console
-> db.usuarios.createIndex({nombre: 1})
-nombre_1
-```
 
 
